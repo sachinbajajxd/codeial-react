@@ -19,6 +19,8 @@ function App() {
 
   const auth = useAuth();
 
+  console.log(auth.user);
+
   if(auth.loading){
     return <Loader />;
   }

@@ -16,7 +16,8 @@ const customFetch = async (url, { body, ...customConfig}) => {
         ...customConfig,
         headers: {
             ...headers,
-            ...customConfig.headers
+            ...customConfig.headers,
+            
         },
         // mode: 'no-cors'
     };
@@ -72,6 +73,30 @@ export const editProfile = async (userId, name, password, confirmPassword) => {
     return customFetch(API_URLS.editUser(), {
         method: 'POST',
         body: {id: userId, name, password, confirm_password: confirmPassword}
+    });
+};
+
+export const fetchUserProfile = (userId) => {
+    return customFetch(API_URLS.userInfo(userId), {
+      method: 'GET',
+    });
+};
+
+export const fetchUserFriends = () => {
+    return customFetch(API_URLS.friends(), {
+      method: 'GET',
+    });
+};
+
+export const addFriend = (userId) => {
+    return customFetch(API_URLS.createFriendship(userId), {
+      method: 'POST',
+    });
+};
+
+export const removeFriend = (userId) => {
+    return customFetch(API_URLS.removeFriend(userId), {
+      method: 'POST',
     });
 };
 // export default getPosts;

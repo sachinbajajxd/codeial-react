@@ -40,7 +40,14 @@ const Home = () => {
               alt="user-pic"
             />
             <div>
-              <Link to={`/user/${post.user._id}`} className={styles.postAuthor}>{post.user.name}</Link>
+              {/* {console.log('post', post)} */}
+            <Link
+                  to={`/user/${post.user._id}`}
+                  state={post.user}
+                  className={styles.postAuthor}
+                >
+                  {post.user.name}
+                </Link>
               <span className={styles.postTime}>a minute ago</span>
             </div>
           </div>
