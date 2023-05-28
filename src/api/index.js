@@ -99,4 +99,30 @@ export const removeFriend = (userId) => {
       method: 'POST',
     });
 };
+
+export const addPost = (content) => {
+    return customFetch(API_URLS.createPost(), {
+      method: 'POST',
+      body: {
+        content,
+      },
+    });
+  };
+  
+
+  export const createComment = async (content, postId) => {
+    return customFetch(API_URLS.comment(), {
+      method: 'POST',
+      body: {
+        post_id: postId,
+        content,
+      },
+    });
+  };
+
+  export const searchUsers = (searchText) => {
+    return customFetch(API_URLS.searchUsers(searchText), {
+      method: 'GET',
+    });
+  };
 // export default getPosts;

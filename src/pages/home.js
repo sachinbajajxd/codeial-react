@@ -3,85 +3,46 @@ import { Link } from 'react-router-dom';
 import { getPosts } from '../api';
 import propTypes from 'prop-types';
 import styles from '../styles/home.module.css';
-import { Comment, Loader } from '../components';
+import { Comment, Loader, FriendsList, CreatePost, Post } from '../components';
+import { useAuth, usePosts } from '../hooks';
 
 
 const Home = () => {
 
-  const [posts, setPosts] = useState([]);
-  const [loading, setLoading] = useState([]);
+  // const [posts, setPosts] = useState([]);
+  // const [loading, setLoading] = useState([]);
+  const auth=useAuth();
+  const posts=usePosts();
 
-  useEffect(() => {
-    const fetchPosts = async () => {
-      const response = await getPosts();
+  // console.log(posts);
 
-      if (response.success) {
-        setPosts(response.data.posts);
-      }
+  // useEffect(() => {
+  //   const fetchPosts = async () => {
+  //     const response = await getPosts();
 
-      setLoading(false);
-    };
+  //     if (response.success) {
+  //       setPosts(response.data.posts);
+  //     }
 
-    fetchPosts();
-  }, []);
+  //     setLoading(false);
+  //   };
 
-  if (loading) {
+  //   fetchPosts();
+  // }, []);
+
+  if (posts.loading) {
     return <Loader />;
   }
 
   return (
-    <div className={styles.postsList}>
-      {posts.map(post => (
-        <div className={styles.postWrapper} key={`post-${post._id}`}>
-        <div className={styles.postHeader}>
-          <div className={styles.postAvatar}>
-            <img
-              src="https://freesvg.org/storage/img/thumb/abstract-user-flat-3.png"
-              alt="user-pic"
-            />
-            <div>
-              {/* {console.log('post', post)} */}
-            <Link
-                  to={`/user/${post.user._id}`}
-                  state={post.user}
-                  className={styles.postAuthor}
-                >
-                  {post.user.name}
-                </Link>
-              <span className={styles.postTime}>a minute ago</span>
-            </div>
-          </div>
-          <div className={styles.postContent}>{post.content}</div>
-
-          <div className={styles.postActions}>
-            <div className={styles.postLike}>
-              <img
-                src="https://static.vecteezy.com/system/resources/thumbnails/002/590/686/small/casino-poker-heart-figure-line-style-icon-free-vector.jpg"
-                alt="likes-icon"
-              />
-              <span>5</span>
-            </div>
-
-            <div className={styles.postCommentsIcon}>
-              <img
-                src="https://previews.123rf.com/images/msidiqf/msidiqf1905/msidiqf190500072/121838212-conversation-chat-message-comment-icon-vector.jpg"
-                alt="comments-icon"
-              />
-              <span>2</span>
-            </div>
-          </div>
-          <div className={styles.postCommentBox}>
-            <input placeholder="Start typing a comment" />
-          </div>
-
-          <div className={styles.postCommentsList}>
-              {post.comments.map((comment) => (
-                <Comment comment={comment} />
-              ))}
-            </div>
-        </div>
+    <div className={styles.home}>
+        <div className={styles.postsList}>
+        <CreatePost />
+        {posts.data.map(post => (
+          <Post post={post} key={`post-${post._id}`} />
+         ))}
       </div>
-      ))}
+      {auth.user && <FriendsList />}
     </div>
   );
 };
